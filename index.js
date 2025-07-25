@@ -1,103 +1,68 @@
-const Express=require('express')
-const cors=require('cors')
-const Mongodb_client=require('mongodb').MongoClient 
-const orderRoutes=require('./router/orderRoutes');  // ✅ Import
-const PORT= process.env.PORT || 5038;
-const database_Name="expense"
+const express = require('express');
+const cors = require('cors');
+const { MongoClient } = require('mongodb');
+const orderRoutes = require('./router/orderRoutes');
 require('dotenv').config();
-//const collectionName="Brands"
-const url=process.env.MongoDB_Link
-const app=Express()
- app.use(cors({
-  origin: "https://sairai.surge.sh",
-  credentials: true}))
-  app.use(Express.json());
- let database
-// ========================
-// to check connection of back end 
-// ========================  
+
+const app = express();
+const PORT = process.env.PORT || 5038;
+const database_Name = "expense";
+const url = process.env.MongoDB_Link;
+
+let database;
+
+// ==========================
+// Middleware
+// ==========================
+app.use(cors({
+  origin: "https://sairai.surge.sh", // ✅ Allow frontend to access backend
+  credentials: true
+}));
+app.use(express.json()); // ✅ Body parser
+
+// ==========================
+// Basic Route (Health Check)
+// ==========================
 app.get("/", (req, res) => {
   res.send("✅ Backend is running successfully!");
 });
-//====================
-//To connect with Database
-//=======================
-const cors = require("cors");
 
-app.use(cors({
-  origin: "https://sairai.surge.sh",
-  credentials: true
-}));
+// ==========================
+// Connect to MongoDB and Start Server
+// ==========================
+app.listen(PORT, async () => {
+  try {
+    const client = await MongoClient.connect(url, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    });
 
-
- app.listen(PORT,async()=>{
-    try {
-    const client= await Mongodb_client.connect(url)
-     database= client.db(database_Name)
-     console.log(`✅ Connected to MongoDB running of ${PORT}`)
-
-    }
-catch(error){
-    console.error("❌ MongoDB connection failed:", error.message)
-
-}
- })
- app.get("/api/:collectionName/getData",async(req,res)=>{
-const collectionName = req.params.collectionName;
-
-    try{
-
-const result=await database.collection(collectionName).find({}).toArray()
-res.json(result)
-    }
-    catch(error){
-  console.error( console.error("Error fetching data:", error.message));
-    res.status(500).json({ message: "Failed to fetch data." })
-    }
-
- })
- // ========================
-// Inserting a bulk Data 
-// ========================  
-/*app.post("/api/:collectionName/addData", async (req,res)=>{
-    const collectionName=req.params.collectionName
-    const bulkData= req.body
-//const rawData = fs.readFileSync('yourfile.json');
-//const products = JSON.parse(rawData);
-
-// Clean data: convert Stock, Sr_Price, Outlet_Price to numbers
-const cleanedProducts = bulkData.map(item => ({
-  ...item,
-
-  Stock: parseInt(item.Stock || "10", 10), // default if missing or string
-    Price: parseInt(item.Price || "0", 10),
-    Sr_Price: parseInt(item.Sr_Price || "0", 10),
-     Outlet_Price: parseInt(item.Sr_Price || "0", 10),
-}));
-
-
-
-
-
-if (!Array.isArray(bulkData)) {
-    return res.status(400).json({ message: "Expected an array of data." });
+    database = client.db(database_Name);
+    console.log(`✅ Connected to MongoDB, backend running on port ${PORT}`);
+  } catch (error) {
+    console.error("❌ MongoDB connection failed:", error.message);
   }
+});
 
-    try{
-    const result= await database.collection(collectionName).insertMany(cleanedProducts)
-      res.json(result)
-      res.status(200).json({message:"bulk data has been inserted", insertedCount: result.insertedCount})
+// ==========================
+// Routes
+// ==========================
 
-    }
-    catch(error){
-        console.error("Bulk data is not inserted")
-        res.status(500).json({ message: "bulk data has not been inserted.", error:error.message })
-    }
+// Get All Data from a Collection
+app.get("/api/:collectionName/getData", async (req, res) => {
+  const collectionName = req.params.collectionName;
 
+  try {
+    const result = await database.collection(collectionName).find({}).toArray();
+    res.json(result);
+  } catch (error) {
+    console.error("❌ Error fetching data:", error.message);
+    res.status(500).json({ message: "Failed to fetch data." });
+  }
+});
 
-
-})
-   */ app.post("/api/:collectionName/addData", async (req, res) => {
+// Insert Bulk Data into a Collection
+app.post("/api/:collectionName/addData", async (req, res) => {
   const collectionName = req.params.collectionName;
   const bulkData = req.body;
 
@@ -105,7 +70,6 @@ if (!Array.isArray(bulkData)) {
     return res.status(400).json({ message: "Expected an array of data." });
   }
 
-  // Clean and parse
   const cleanedProducts = bulkData.map(item => ({
     ...item,
     Stock: parseInt(item.Stock || "10", 10),
@@ -116,71 +80,40 @@ if (!Array.isArray(bulkData)) {
 
   try {
     const result = await database.collection(collectionName).insertMany(cleanedProducts);
-    return res.status(200).json({
+    res.status(200).json({
       message: "✅ Bulk data inserted successfully",
       insertedCount: result.insertedCount,
     });
   } catch (error) {
     console.error("❌ Bulk insert failed:", error.message);
-    return res.status(500).json({
+    res.status(500).json({
       message: "❌ Bulk data insertion failed",
       error: error.message,
     });
   }
 });
 
-
-//=================================
-//  Inserting Single Form Entry
-//===============================
+// Insert Single Form Entry
 app.post("/api/:collectionName/adddata", async (req, res) => {
   const collectionName = req.params.collectionName;
   const formData = req.body;
 
   try {
     const result = await database.collection(collectionName).insertOne(formData);
-    return res.status(200).json({
+    res.status(200).json({
       message: "✅ Form data inserted successfully",
       insertedId: result.insertedId,
     });
   } catch (error) {
     console.error("❌ Form insert failed:", error.message);
-    return res.status(500).json({
+    res.status(500).json({
       message: "❌ Form data insertion failed",
       error: error.message,
     });
   }
 });
 
+// Use external orderRoutes (handles orders, SMS, etc.)
+app.use('/api', orderRoutes);
 
 
-/*app.post("/api/:collectionName/adddata", async (req,res)=>{
-    
-    const formData= req.body
-const collectionName=req.params.collectionName
-    try{
-    const result= await database.collection(collectionName).insertOne(formData)
-      res.json(result)
-      res.status(200).json({message:"Form data has been inserted", insertedId: result.insertedId})
-
-    }
-    catch(error){
-        console.error("Form data is not inserted")
-        res.status(500).json({ message: "Form data has not been inserted.", error:error.message })
-    }
-
-
-
-})
-*/
-//==================
-//SENding SMS
-//=================
-
-//const orderRoutes = require('./router/orderRoutes');  // ✅ Import
-
-app.use('/api', orderRoutes);  // ✅ Mount under /api
-//===========================
-//Updating Stock and saving order detail
-//ro
-//app.post("/:collectionName/Placeorder",orderRoutes)
