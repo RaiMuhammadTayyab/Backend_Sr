@@ -16,7 +16,7 @@ let database;
 // ==========================
 app.use(cors({
   origin: "https://sairai.surge.sh", // ✅ Allow frontend to access backend
-  credentials: true
+  credentials: false
 }));
 app.use(express.json()); // ✅ Body parser
 
