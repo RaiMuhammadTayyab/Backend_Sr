@@ -10,13 +10,22 @@ const database_Name = "expense";
 const url = process.env.MongoDB_Link;
 
 let database;
-
+const allowedOrigins = [
+  "http://localhost:3000",      // for local development
+  "https://sairai.surge.sh"     // for production (deployed frontend)
+];
 // ==========================
 // Middleware
 // ==========================
 app.use(cors({
-  origin: "https://sairai.surge.sh", // ✅ Allow frontend to access backend
-  credentials: false
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: false,
 }));
 app.use(express.json()); // ✅ Body parser
 
