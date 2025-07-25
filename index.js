@@ -8,15 +8,27 @@ require('dotenv').config();
 //const collectionName="Brands"
 const url=process.env.MongoDB_Link
 const app=Express()
- app.use(cors())
+ app.use(cors({
+  origin: "https://sairai.surge.sh",
+  credentials: true}))
   app.use(Express.json());
  let database
 // ========================
-// Connect to MongoDB
+// to check connection of back end 
 // ========================  
 app.get("/", (req, res) => {
   res.send("✅ Backend is running successfully!");
 });
+//====================
+//To connect with Database
+//=======================
+const cors = require("cors");
+
+app.use(cors({
+  origin: "https://sairai.surge.sh",
+  credentials: true
+}));
+
 
  app.listen(PORT,async()=>{
     try {
