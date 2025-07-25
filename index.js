@@ -59,7 +59,7 @@ res.json(result)
  // ========================
 // Inserting a bulk Data 
 // ========================  
-app.post("/api/:collectionName/addData", async (req,res)=>{
+/*app.post("/api/:collectionName/addData", async (req,res)=>{
     const collectionName=req.params.collectionName
     const bulkData= req.body
 //const rawData = fs.readFileSync('yourfile.json');
@@ -97,10 +97,64 @@ if (!Array.isArray(bulkData)) {
 
 
 })
+   */ app.post("/api/:collectionName/addData", async (req, res) => {
+  const collectionName = req.params.collectionName;
+  const bulkData = req.body;
+
+  if (!Array.isArray(bulkData)) {
+    return res.status(400).json({ message: "Expected an array of data." });
+  }
+
+  // Clean and parse
+  const cleanedProducts = bulkData.map(item => ({
+    ...item,
+    Stock: parseInt(item.Stock || "10", 10),
+    Price: parseInt(item.Price || "0", 10),
+    Sr_Price: parseInt(item.Sr_Price || "0", 10),
+    Outlet_Price: parseInt(item.Outlet_Price || "0", 10),
+  }));
+
+  try {
+    const result = await database.collection(collectionName).insertMany(cleanedProducts);
+    return res.status(200).json({
+      message: "✅ Bulk data inserted successfully",
+      insertedCount: result.insertedCount,
+    });
+  } catch (error) {
+    console.error("❌ Bulk insert failed:", error.message);
+    return res.status(500).json({
+      message: "❌ Bulk data insertion failed",
+      error: error.message,
+    });
+  }
+});
+
+
 //=================================
 //  Inserting Single Form Entry
 //===============================
-app.post("/api/:collectionName/adddata", async (req,res)=>{
+app.post("/api/:collectionName/adddata", async (req, res) => {
+  const collectionName = req.params.collectionName;
+  const formData = req.body;
+
+  try {
+    const result = await database.collection(collectionName).insertOne(formData);
+    return res.status(200).json({
+      message: "✅ Form data inserted successfully",
+      insertedId: result.insertedId,
+    });
+  } catch (error) {
+    console.error("❌ Form insert failed:", error.message);
+    return res.status(500).json({
+      message: "❌ Form data insertion failed",
+      error: error.message,
+    });
+  }
+});
+
+
+
+/*app.post("/api/:collectionName/adddata", async (req,res)=>{
     
     const formData= req.body
 const collectionName=req.params.collectionName
@@ -118,7 +172,7 @@ const collectionName=req.params.collectionName
 
 
 })
-
+*/
 //==================
 //SENding SMS
 //=================
