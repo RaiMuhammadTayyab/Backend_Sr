@@ -14,6 +14,10 @@ const app=Express()
 // ========================
 // Connect to MongoDB
 // ========================  
+app.get("/", (req, res) => {
+  res.send("✅ Backend is running successfully!");
+});
+
  app.listen(PORT,async()=>{
     try {
     const client= await Mongodb_client.connect(url)
