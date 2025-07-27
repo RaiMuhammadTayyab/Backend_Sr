@@ -85,6 +85,7 @@ app.post("/api/:collectionName/addData", async (req, res) => {
     Price: parseInt(item.Price || "0", 10),
     Sr_Price: parseInt(item.Sr_Price || "0", 10),
     Outlet_Price: parseInt(item.Outlet_Price || "0", 10),
+    Cost:parseInt(item.Cost || "0", 10),
   }));
 
   try {
