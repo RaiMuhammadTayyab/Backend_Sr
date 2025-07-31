@@ -7,7 +7,7 @@ const alldata= async (req, res) => {
     const db = client.db("expense");
     const collection = db.collection(collectionName);
     
-    const result = await collection(collectionName).find({}).toArray();
+    const result = await collection.find({}).toArray();
     res.json(result);
   } catch (error) {
     console.error("❌ Error fetching data:", error.message);

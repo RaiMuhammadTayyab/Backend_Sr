@@ -6,7 +6,7 @@ const { client} = require("../db/mongoclient");
   try {
       const db = client.db("expense");
           const collection = db.collection(collectionName);
-    const result = await collection(collectionName).insertOne(formData);
+    const result = await collection.insertOne(formData);
     res.status(200).json({
       message: "✅ Form data inserted successfully",
       insertedId: result.insertedId,
