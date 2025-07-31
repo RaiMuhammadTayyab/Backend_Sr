@@ -35,7 +35,11 @@ app.use(express.json()); // ✅ Body parser
 // ==========================
 app.get("/", (req, res) => {
   res.send("✅ Backend is running successfully!");
-});
+}) 
+//Use external orderRoutes (handles orders, SMS, etc.)
+app.use('/api', orderRoutes);
+
+
 const startServer = require("./Mainserver/server");
 startServer(app, PORT, "expense");
 module.exports = app
