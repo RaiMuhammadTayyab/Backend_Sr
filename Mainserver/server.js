@@ -4,11 +4,11 @@ require("dotenv").config();
 
 const PORT = process.env.PORT || 5038;
 const database_Name = "expense";
-
+let database;
 async function startServer() {
   try {
     await client.connect();
-    global.database = client.db(database_Name); // Now accessible in controllers
+    database = client.db(database_Name); // Now accessible in controllers
     console.log(`✅ Connected to MongoDB`);
 
     app.listen(PORT, () => {
