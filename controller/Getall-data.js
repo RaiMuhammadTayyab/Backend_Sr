@@ -4,7 +4,7 @@ const { client} = require("../db/mongoclient");
 
   try {
     const db = client.db("expense");
-          const collection = db.collection(collectionName);
+    const collection = db.collection(collectionName);
     
     const result = await collection(collectionName).find({}).toArray();
     res.json(result);

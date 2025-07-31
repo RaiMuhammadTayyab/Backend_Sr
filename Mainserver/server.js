@@ -1,11 +1,12 @@
-const app = require("../index");
+//const app = require("../index");
 const { client } = require("../db/mongoclient");
 require("dotenv").config();
 
-const PORT = process.env.PORT || 5038;
-const database_Name = "expense";
+//const PORT = process.env.PORT || 5038;
+//const database_Name = "expense";
 let database;
-async function startServer() {
+
+async function startServer(app,PORT,database_Name) {
   try {
     await client.connect();
     database = client.db(database_Name); // Now accessible in controllers
@@ -19,5 +20,5 @@ async function startServer() {
   }
 }
 
-startServer();
+module.exports=startServer
 

@@ -2,14 +2,14 @@ const express = require('express');
 const cors = require('cors');
 //const { MongoClient } = require('mongodb');
 const orderRoutes = require('./router/orderRoutes');
-//require('dotenv').config();
+require('dotenv').config();
 
 const app = express();
-/*const PORT = process.env.PORT || 5038;
-const database_Name = "expense";
-const url = process.env.MongoDB_Link;
+const PORT = process.env.PORT || 5038;
+//const database_Name = "expense";
+//const url = process.env.MongoDB_Link;*/
 
-let database;*/
+//let database;
 const allowedOrigins = [
   "http://localhost:3000",      // for local development
   "https://sairai.surge.sh"     // for production (deployed frontend)
@@ -36,6 +36,8 @@ app.use(express.json()); // ✅ Body parser
 app.get("/", (req, res) => {
   res.send("✅ Backend is running successfully!");
 });
+const startServer = require("./Mainserver/server");
+startServer(app, PORT, "expense");
 module.exports = app
 // ==========================
 // Connect to MongoDB and Start Server
