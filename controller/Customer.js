@@ -1,4 +1,5 @@
 const { client} = require("../db/mongoclient");
+
 const customer= async (req, res) => {
   const collectionName = req.params.collectionName;
   const CustomerData = req.body;

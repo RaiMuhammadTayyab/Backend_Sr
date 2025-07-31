@@ -4,7 +4,7 @@ const updateStock = require("../controller/UpdatingStock");
 const customer=require("../controller/Customer")
 const Bulkdata=require("../controller/Bulkdata")
 const Form=require("../controller/Singleform")
-const alldata=require("../controller/Getall-data")
+const alldata=require("../controller/alldata")
 router.post("/:collectionName/Placeorder", updateStock);
 router.post("/:collectionName/addcustomer",customer);
 router.post("/:collectionName/addData",Bulkdata)
