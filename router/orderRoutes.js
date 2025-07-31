@@ -7,9 +7,9 @@ const Form=require("../controller/Singleform")
 const alldata=require("../controller/Getall-data")
 router.post("/:collectionName/Placeorder", updateStock);
 router.post("/:collectionName/addcustomer",customer);
-router.post("/api/:collectionName/addData",Bulkdata)
-router.post("/api/:collectionName/adddata",Form)
-router.get("/api/:collectionName/getData",alldata)
+router.post("/:collectionName/addData",Bulkdata)
+router.post("/:collectionName/adddata",Form)
+router.get("/:collectionName/getdata",alldata)
 module.exports = router;
 
 
