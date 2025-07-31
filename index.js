@@ -1,19 +1,20 @@
 const express = require('express');
 const cors = require('cors');
-const { MongoClient } = require('mongodb');
+//const { MongoClient } = require('mongodb');
 const orderRoutes = require('./router/orderRoutes');
-require('dotenv').config();
+//require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 5038;
+/*const PORT = process.env.PORT || 5038;
 const database_Name = "expense";
 const url = process.env.MongoDB_Link;
 
-let database;
+let database;*/
 const allowedOrigins = [
   "http://localhost:3000",      // for local development
   "https://sairai.surge.sh"     // for production (deployed frontend)
 ];
+
 // ==========================
 // Middleware
 // ==========================
@@ -35,11 +36,11 @@ app.use(express.json()); // ✅ Body parser
 app.get("/", (req, res) => {
   res.send("✅ Backend is running successfully!");
 });
-
+module.exports = app
 // ==========================
 // Connect to MongoDB and Start Server
 // ==========================
-app.listen(PORT, async () => {
+/*app.listen(PORT, async () => {
   try {
     const client = await MongoClient.connect(url, {
       useNewUrlParser: true,
@@ -52,13 +53,22 @@ app.listen(PORT, async () => {
     console.error("❌ MongoDB connection failed:", error.message);
   }
 });
+// Use external orderRoutes (handles orders, SMS, etc.)
+app.use('/api', orderRoutes);
+
+module.exports = app;
+
+
+
+
+
 
 // ==========================
 // Routes
 // ==========================
 
 // Get All Data from a Collection
-app.get("/api/:collectionName/getData", async (req, res) => {
+/*app.get("/api/:collectionName/getData", async (req, res) => {
   const collectionName = req.params.collectionName;
 
   try {
@@ -70,18 +80,18 @@ app.get("/api/:collectionName/getData", async (req, res) => {
   }
 });
 
-// Insert Bulk Data into a Collection
+ Insert Bulk Data into a Collection
 app.post("/api/:collectionName/addData", async (req, res) => {
   const collectionName = req.params.collectionName;
-  const bulkData = req.body;
+  const BulkData = req.body;
 
-  if (!Array.isArray(bulkData)) {
+  if (!Array.isArray(BulkData)) {
     return res.status(400).json({ message: "Expected an array of data." });
   }
 
-  const cleanedProducts = bulkData.map(item => ({
+  const cleanedProducts = BulkData.map(item => ({
     ...item,
-    Stock: parseInt(item.Stock || "10", 10),
+    Stock: parseInt(item.Stock || "0", 10),
     Price: parseInt(item.Price || "0", 10),
     Sr_Price: parseInt(item.Sr_Price || "0", 10),
     Outlet_Price: parseInt(item.Outlet_Price || "0", 10),
@@ -89,7 +99,7 @@ app.post("/api/:collectionName/addData", async (req, res) => {
   }));
 
   try {
-    const result = await database.collection(collectionName).insertMany(cleanedProducts);
+    const result = await database.collection(collectionName).insertOne(cleanedProducts);
     res.status(200).json({
       message: "✅ Bulk data inserted successfully",
       insertedCount: result.insertedCount,
@@ -122,8 +132,7 @@ app.post("/api/:collectionName/adddata", async (req, res) => {
     });
   }
 });
+*/
 
-// Use external orderRoutes (handles orders, SMS, etc.)
-app.use('/api', orderRoutes);
 
 

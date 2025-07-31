@@ -1,9 +1,25 @@
 const express = require('express');
 const router = express.Router();
 const updateStock = require("../controller/UpdatingStock");
-const sendSMS = require('../controller/SendSMS');
+const customer=require("../controller/Customer")
+const Bulkdata=require("../controller/Bulkdata")
+const Form=require("../controller/Singleform")
+const alldata=require("../controller/Getall-data")
+router.post("/:collectionName/Placeorder", updateStock);
+router.post("/:collectionName/addcustomer",customer);
+router.post("/api/:collectionName/addData",Bulkdata)
+router.post("/api/:collectionName/adddata",Form)
+router.get("/api/:collectionName/getData",alldata)
+module.exports = router;
+
+
+
+
+
+
+//const sendSMS = require('../controller/SendSMS');
 //const sendEmail = require('../sendEmail');
-const formatPhoneNumber = (number) => {
+/*const formatPhoneNumber = (number) => {
   // Replace leading 0 with +92 (Pakistan country code)
   if (number.startsWith('0')) {
     return '+92' + number.slice(1);
@@ -21,10 +37,7 @@ router.post('/send-sms', async (req, res) => {
     res.status(500).json({ error: 'Failed to send SMS' });
   }
 });
+*/
 
-router.post("/:collectionName/Placeorder", updateStock);
-
-
-module.exports = router;
 
 

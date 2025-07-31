@@ -43,14 +43,15 @@ const updateStock = async (req, res) => {
 
         // ✅ Use item values (not product) for order record
         orderItems.push({
-          productId: item.productId,           // ✅ Fixed: use `item.productId`
+          productId: item.productId,
+          productsku:product.Outlet_ID,           // ✅ Fixed: use `item.productId`
           Brand: product.Brand,
           quantity: item.quantity,             // ✅ Fixed: use `item.quantity`
-          price: product.Sr_Price,
-          subtotal: product.Sr_Price * item.quantity,
+          price: product.Outlet_Price,
+          subtotal: product.Outlet_Price * item.quantity,
         });
 
-        orderTotal += product.Sr_Price * item.quantity;
+        orderTotal += product.Outlet_Price * item.quantity;
       }
 
       // ✅ Insert the order
