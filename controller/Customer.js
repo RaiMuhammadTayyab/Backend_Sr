@@ -5,6 +5,7 @@ const customer= async (req, res) => {
   const CustomerData = req.body;
 
   try {
+     await client.connect();
      const db = client.db("expense");
       const collection = db.collection(collectionName);
 

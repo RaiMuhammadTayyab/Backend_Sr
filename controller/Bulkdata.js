@@ -18,6 +18,7 @@ const { client} = require("../db/mongoclient");
   }));
 
   try {
+     await client.connect();
     const db = client.db("expense");
           const collection = db.collection(collectionName);
     const result = await collection.insertOne(cleanedProducts);

@@ -1,11 +1,12 @@
 const express = require('express');
 const cors = require('cors');
 //const { MongoClient } = require('mongodb');
-const orderRoutes = require('./router/orderRoutes');
+const orderRoutes = require('./router/orderRoutes.js');
+//const startServer = require("./Mainserver/server");
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 5038;
+//const PORT = process.env.PORT || 5038;
 //const database_Name = "expense";
 //const url = process.env.MongoDB_Link;*/
 
@@ -38,10 +39,7 @@ app.get("/", (req, res) => {
 }) 
 //Use external orderRoutes (handles orders, SMS, etc.)
 app.use('/api', orderRoutes);
-
-
-const startServer = require("./Mainserver/server");
-startServer(app, PORT, "expense");
+//startServer(app, PORT, "expense");
 module.exports = app
 // ==========================
 // Connect to MongoDB and Start Server
@@ -63,7 +61,7 @@ module.exports = app
 app.use('/api', orderRoutes);
 
 module.exports = app;
-
+*/
 
 
 
@@ -73,7 +71,7 @@ module.exports = app;
 // Routes
 // ==========================
 
-// Get All Data from a Collection
+//Get All Data from a Collection
 /*app.get("/api/:collectionName/getData", async (req, res) => {
   const collectionName = req.params.collectionName;
 
@@ -86,6 +84,7 @@ module.exports = app;
   }
 });
 
+/*
  Insert Bulk Data into a Collection
 app.post("/api/:collectionName/addData", async (req, res) => {
   const collectionName = req.params.collectionName;
