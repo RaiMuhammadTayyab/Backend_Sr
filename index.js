@@ -1,7 +1,14 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const orderRoutes = require('./router/orderRoutes.js');
 const startServer = require("./Mainserver/server");
+
+//const { MongoClient } = require('mongodb');
+const app = express();
+const PORT = process.env.PORT || 5038;
+const database_Name = "expense";
+//const url = process.env.MongoDB_Link;
 
 let database;
 const allowedOrigins = [
@@ -9,7 +16,6 @@ const allowedOrigins = [
   "https://sairai.surge.sh"     // for production (deployed frontend)
 ];
 
-const app = express();
 // ==========================
 // Middleware
 // ==========================
@@ -34,11 +40,9 @@ app.get("/", (req, res) => {
 }) 
 //Use external orderRoutes (handles orders, SMS, etc.)
 app.use('/api', orderRoutes);
-
+//module.exports = app;
 
 startServer(app, PORT, database_Name);
-
-
 //module.exports = app
 // ==========================
 // Connect to MongoDB and Start Server
@@ -57,10 +61,7 @@ startServer(app, PORT, database_Name);
   }
 });
 */
-// Use external orderRoutes (handles orders, SMS, etc.)
-
-
-
+// Use external orderRoutes (handles orders, SMS, etc.
 
 
 
@@ -70,7 +71,7 @@ startServer(app, PORT, database_Name);
 // ==========================
 
 //Get All Data from a Collection
-app.get("/api/:collectionName/getdata", async (req, res) => {
+/*app.get("/api/:collectionName/getdata", async (req, res) => {
   const collectionName = req.params.collectionName;
 
   try {
