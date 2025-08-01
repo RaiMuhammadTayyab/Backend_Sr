@@ -1,16 +1,16 @@
 const express = require('express');
 const cors = require('cors');
-//const { MongoClient } = require('mongodb');
+const { MongoClient } = require('mongodb');
 const orderRoutes = require('./router/orderRoutes.js');
 //const startServer = require("./Mainserver/server");
 require('dotenv').config();
 
 const app = express();
-//const PORT = process.env.PORT || 5038;
-//const database_Name = "expense";
-//const url = process.env.MongoDB_Link;*/
+const PORT = process.env.PORT || 5038;
+const database_Name = "expense";
+const url = process.env.MongoDB_Link;
 
-//let database;
+let database;
 const allowedOrigins = [
   "http://localhost:3000",      // for local development
   "https://sairai.surge.sh"     // for production (deployed frontend)
@@ -40,11 +40,11 @@ app.get("/", (req, res) => {
 //Use external orderRoutes (handles orders, SMS, etc.)
 app.use('/api', orderRoutes);
 //startServer(app, PORT, "expense");
-module.exports = app
+//module.exports = app
 // ==========================
 // Connect to MongoDB and Start Server
 // ==========================
-/*app.listen(PORT, async () => {
+app.listen(PORT, async () => {
   try {
     const client = await MongoClient.connect(url, {
       useNewUrlParser: true,
@@ -61,7 +61,7 @@ module.exports = app
 app.use('/api', orderRoutes);
 
 module.exports = app;
-*/
+
 
 
 
@@ -72,7 +72,7 @@ module.exports = app;
 // ==========================
 
 //Get All Data from a Collection
-/*app.get("/api/:collectionName/getData", async (req, res) => {
+app.get("/api/:collectionName/getdata", async (req, res) => {
   const collectionName = req.params.collectionName;
 
   try {
