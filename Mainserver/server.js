@@ -2,11 +2,11 @@
 
 require("dotenv").config();
 const { client } = require("../db/mongoclient");
-const app = require("../index");
-const PORT = process.env.PORT || 5038;
-const database_Name = "expense";
+//const app = require("../index");
+//const PORT = process.env.PORT || 5038;
+//const database_Name = "expense";
 
-async function startServer() {
+async function startServer(app,PORT,database_Name) {
   try {
     console.log("✅ MONGO URI:", process.env.MongoDB_Link);
     await client.connect();
@@ -21,4 +21,4 @@ async function startServer() {
   }
   
 }
-startServer();
+module.exports=startServer
