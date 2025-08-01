@@ -1,14 +1,7 @@
 const express = require('express');
 const cors = require('cors');
-//const { MongoClient } = require('mongodb');
 const orderRoutes = require('./router/orderRoutes.js');
 const startServer = require("./Mainserver/server");
-//require('dotenv').config();
-
-const app = express();
-const PORT = process.env.PORT || 5038;
-const database_Name = "expense";
-//const url = process.env.MongoDB_Link;
 
 let database;
 const allowedOrigins = [
@@ -16,9 +9,11 @@ const allowedOrigins = [
   "https://sairai.surge.sh"     // for production (deployed frontend)
 ];
 
+const app = express();
 // ==========================
 // Middleware
 // ==========================
+app.use(express.json()); 
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
@@ -29,7 +24,7 @@ app.use(cors({
   },
   credentials: false,
 }));
-app.use(express.json()); // ✅ Body parser
+a// ✅ Body parser
 
 // ==========================
 // Basic Route (Health Check)
@@ -39,9 +34,13 @@ app.get("/", (req, res) => {
 }) 
 //Use external orderRoutes (handles orders, SMS, etc.)
 app.use('/api', orderRoutes);
-//module.exports = app;
+
 
 startServer(app, PORT, database_Name);
+
+
+
+
 //module.exports = app
 // ==========================
 // Connect to MongoDB and Start Server
