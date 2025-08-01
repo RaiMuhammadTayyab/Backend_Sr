@@ -1,7 +1,7 @@
 //const app = require("../index");
 const { client } = require("../db/mongoclient");
 require("dotenv").config();
-const app = require("./index");
+const app = require("../index");
 const PORT = process.env.PORT || 5038;
 const database_Name = "expense";
 
