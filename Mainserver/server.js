@@ -7,6 +7,7 @@ const database_Name = "expense";
 
 async function startServer() {
   try {
+    console.log("✅ MONGO URI:", process.env.MongoDB_Link);
     await client.connect();
     database = client.db(database_Name); // Now accessible in controllers
     console.log(`✅ Connected to MongoDB`);
