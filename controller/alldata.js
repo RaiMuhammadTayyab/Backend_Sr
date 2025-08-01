@@ -2,6 +2,7 @@ const { client} = require("../db/mongoclient");
    
 const alldata= async (req, res) => {
   const collectionName = req.params.collectionName;
+ console.log("📥 API HIT: Fetching data from collection:", collectionName);
 
   try {
     const db = client.db("expense");

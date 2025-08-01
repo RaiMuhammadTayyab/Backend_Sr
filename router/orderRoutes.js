@@ -10,6 +10,10 @@ router.post("/:collectionName/addcustomer",customer);
 router.post("/:collectionName/addData",Bulkdata)
 router.post("/:collectionName/adddata",Form)
 router.get("/:collectionName/getdata",alldata)
+
+router.get("/test", (req, res) => {
+  res.send("✅ Router working");
+});
 module.exports = router;
 
 
