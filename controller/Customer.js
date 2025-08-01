@@ -4,8 +4,11 @@ const customer= async (req, res) => {
   const collectionName = req.params.collectionName;
   const CustomerData = req.body;
 
-  try {
-     await client.connect();
+  try { 
+    if (!client.topology?.isConnected()) {
+        await client.connect(); // Connect only if not already connected
+      }
+     
      const db = client.db("expense");
       const collection = db.collection(collectionName);
 

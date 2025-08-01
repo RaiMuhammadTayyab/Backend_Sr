@@ -18,7 +18,9 @@ const { client} = require("../db/mongoclient");
   }));
 
   try {
-     await client.connect();
+      if (!client.topology?.isConnected()) {
+           await client.connect(); // Connect only if not already connected
+         }
     const db = client.db("expense");
           const collection = db.collection(collectionName);
     const result = await collection.insertOne(cleanedProducts);

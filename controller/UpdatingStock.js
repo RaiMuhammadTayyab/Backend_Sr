@@ -5,7 +5,9 @@ const updateStock = async (req, res) => {
   const collectionName = req.params.collectionName;
 
   try {
-    await client.connect();
+     if (!client.topology?.isConnected()) {
+          await client.connect(); // Connect only if not already connected
+        }
     const db = client.db("expense");
     const session = client.startSession();
 

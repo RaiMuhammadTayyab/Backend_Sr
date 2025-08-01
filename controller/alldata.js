@@ -4,7 +4,11 @@ const alldata= async (req, res) => {
   const collectionName = req.params.collectionName;
  console.log("📥 API HIT: Fetching data from collection:", collectionName);
 
-  try {
+  try { 
+    if (!client.topology?.isConnected()) {
+      await client.connect(); // Connect only if not already connected
+    }
+
     const db = client.db("expense");
     const collection = db.collection(collectionName);
     
