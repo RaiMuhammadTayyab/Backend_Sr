@@ -24,7 +24,7 @@ app.use(cors({
   },
   credentials: false,
 }));
-a// ✅ Body parser
+// ✅ Body parser
 
 // ==========================
 // Basic Route (Health Check)
@@ -37,8 +37,6 @@ app.use('/api', orderRoutes);
 
 
 startServer(app, PORT, database_Name);
-
-
 
 
 //module.exports = app
@@ -60,9 +58,7 @@ startServer(app, PORT, database_Name);
 });
 */
 // Use external orderRoutes (handles orders, SMS, etc.)
-app.use('/api', orderRoutes);
 
-module.exports = app;
 
 
 
