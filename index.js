@@ -6,9 +6,9 @@ const orderRoutes = require('./router/orderRoutes.js');
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 5038;
-const database_Name = "expense";
-const url = process.env.MongoDB_Link;
+//const PORT = process.env.PORT || 5038;
+//const database_Name = "expense";
+//const url = process.env.MongoDB_Link;
 
 let database;
 const allowedOrigins = [
@@ -39,12 +39,16 @@ app.get("/", (req, res) => {
 }) 
 //Use external orderRoutes (handles orders, SMS, etc.)
 app.use('/api', orderRoutes);
+app.use('/api', orderRoutes);
+
+module.exports = app;
+
 //startServer(app, PORT, "expense");
 //module.exports = app
 // ==========================
 // Connect to MongoDB and Start Server
 // ==========================
-app.listen(PORT, async () => {
+/*app.listen(PORT, async () => {
   try {
     const client = await MongoClient.connect(url, {
       useNewUrlParser: true,
@@ -57,6 +61,7 @@ app.listen(PORT, async () => {
     console.error("❌ MongoDB connection failed:", error.message);
   }
 });
+*/
 // Use external orderRoutes (handles orders, SMS, etc.)
 app.use('/api', orderRoutes);
 
