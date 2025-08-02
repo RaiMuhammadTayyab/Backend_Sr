@@ -1,7 +1,8 @@
 const { client, ObjectId } = require("../db/mongoclient");
 
 const updateStock = async (req, res) => {
-  const cartItems = req.body.cart;
+  const { customer, cart } = req.body;
+  const cartItems = cart;
   const collectionName = req.params.collectionName;
 
   try {
@@ -45,6 +46,7 @@ const updateStock = async (req, res) => {
 
         // ✅ Use item values (not product) for order record
         orderItems.push({
+          Customer_Detail:customer,
           productId: item.productId,
           productsku:product.Outlet_ID,           // ✅ Fixed: use `item.productId`
           Brand: product.Brand,
@@ -61,7 +63,8 @@ const updateStock = async (req, res) => {
         {
           items: orderItems,
           totalAmount: orderTotal,
-          createdAt: new Date(),
+          createdAt:new Date().toLocaleString("en-PK", {
+  timeZone: "Asia/Karachi"})
         },
         { session }
       );
