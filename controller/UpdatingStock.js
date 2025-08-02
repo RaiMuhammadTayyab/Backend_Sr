@@ -1,7 +1,7 @@
 const { client, ObjectId } = require("../db/mongoclient");
 
 const updateStock = async (req, res) => {
-  const { customer, cart } = req.body;
+  const { customer, cart,totalprice } = req.body;
   const cartItems = cart;
   const collectionName = req.params.collectionName;
 
@@ -51,7 +51,7 @@ const updateStock = async (req, res) => {
           productsku:product.Outlet_ID,           // ✅ Fixed: use `item.productId`
           Brand: product.Brand,
           quantity: item.quantity,             // ✅ Fixed: use `item.quantity`
-          price: product.Outlet_Price,
+          Cod_price:totalprice,
           subtotal: product.Outlet_Price * item.quantity,
         });
 
